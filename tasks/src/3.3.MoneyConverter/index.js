@@ -12,6 +12,22 @@ import './styles.css';
 const RUBLES_IN_ONE_EURO = 70;
 
 class MoneyConverter extends React.Component {
+  constructor() {
+    super()
+    this.state = { rub: 0, euro: 0 }
+
+  }
+
+  updateRub = value => {
+    const rub = Number.parseFloat(value) || 0;
+    this.setState({ rub: rub, euro: rub / RUBLES_IN_ONE_EURO });
+  }
+
+  updateEuro = value => {
+    const euro = Number.parseFloat(value) || 0;
+    this.setState({ rub: euro * RUBLES_IN_ONE_EURO, euro: euro });
+  }
+
   render() {
     return (
       <div className="root">
@@ -19,9 +35,9 @@ class MoneyConverter extends React.Component {
           <h2>Конвертер валют</h2>
           <div>
             <span>&#8381;</span>
-            <Money />
+            <Money currency={this.state.rub} onChange={this.updateRub} />
             &mdash;
-            <Money />
+            <Money currency={this.state.euro} onChange={this.updateEuro} />
             <span>&euro;</span>
           </div>
         </div>
@@ -33,16 +49,13 @@ class MoneyConverter extends React.Component {
 class Money extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: 0
-    };
   }
 
   render() {
     return (
       <input
         type="text"
-        value={this.state.value}
+        value={this.props.currency}
         onChange={this.handleChangeValue}
       />
     );
@@ -50,11 +63,14 @@ class Money extends React.Component {
 
   handleChangeValue = event => {
     const value = extractNumberString(event.target.value);
-    this.setState({ value });
+    this.props.onChange(value);
   };
 }
 
-Money.propTypes = {};
+Money.propTypes = {
+  onChange: PropTypes.func,
+  currency: PropTypes.number,
+};
 
 function extractNumberString(value) {
   const str = value.replace(/^0+/g, '').replace(/[^\.0-9]/g, '');
