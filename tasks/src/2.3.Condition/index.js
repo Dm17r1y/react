@@ -16,9 +16,9 @@ import './styles.css';
  */
 
 function renderPosts(posts) {
-  if (posts.length == 0)
+  if (posts.length === 0)
     return <div className="emptyPosts">Нет откликов</div>;
-  if (posts.length == 1)
+  if (posts.length === 1)
     return <div className="singlePost">Единственный отклик</div>;
   return <div className="posts">Отклики в количестве {posts.length}</div>;
 }
@@ -34,7 +34,7 @@ function renderLot(name, description, tags) {
 }
 
 function renderTags(tags) {
-  if (tags.length == 0) {
+  if (tags.length === 0) {
     return null;
   }
   const content = tags.join(', ');
