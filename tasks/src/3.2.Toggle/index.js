@@ -31,9 +31,7 @@ class Toggle extends React.Component {
   }
 
   handleClick = () => {
-    this.setState(prevState => {
-      return { checked: !prevState.checked }
-    })
+    this.setState(prevState => ({ checked: !prevState.checked }))
   };
 }
 

@@ -25,7 +25,7 @@ class Timer extends React.Component {
           type="button"
           value={timeVisible ? 'Скрыть' : 'Показать'}
           onClick={() => {
-            this.setState({ timeVisible: !timeVisible });
+            this.setState(state => ({ timeVisible: !state.timeVisible }));
           }}
         />
         {this.state.timeVisible && <TimeDisplay />}
@@ -38,8 +38,24 @@ class TimeDisplay extends React.Component {
   constructor() {
     super();
     this.state = {
-      localTime: new Date()
+      localTime: new Date(),
+      intervalId: null
     };
+  }
+
+  componentDidMount() {
+    const intervalId = setInterval(() => {
+      console.log('tick');
+      this.setState(state => ({localTime: new Date(state.localTime.getTime() + 1000)}))
+    }, 1000);
+
+    this.setState({intervalId: intervalId})
+  }
+
+  componentWillUnmount() {
+    if (this.state.intervalId != null) {
+      clearInterval(this.state.intervalId)
+    }
   }
 
   render() {
